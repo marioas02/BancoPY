@@ -7,7 +7,14 @@ def cambiarPin():
 def detalles():
     print("mostrar detalles")
 def agregarSaldo():
-    print("Agregar saldo")
+    dni = input("Cual es tu DNI?")
+    pin = (int)(input("introduce tu pin"))
+    cantidad=(int)(input("Cuanto quieres ingresar en tu cuenta?"))
+    addSaldo=("UPDATE cuenta SET saldo=(SELECT SUM(saldo) FROM cuenta) WHERE dni_cliente=%s AND pin=%s")
+    try:
+        query.execute(addSaldo, cantidad, dni, pin)
+    except:
+        print("Se ha producido un error al añadir el saldo.")
 def deposito():
     print("deposito")
 def inversion():
@@ -22,8 +29,8 @@ def baja():
     delCuenta=("DELETE FROM cuenta WHERE dni= %s AND pin= %s")
     delCliente=("DELETE FROM cliente WHERE dni= %s AND contraseña= %s")
     try:
-        query.execute(delCuenta,dni,pin)
-        query.execute(delCliente,dni,passw)
+        query.execute(delCuenta, dni, pin)
+        query.execute(delCliente, dni, passw)
     except:
         print("No se ha podido eliminar la cuenta")
 
