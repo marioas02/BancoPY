@@ -1,6 +1,5 @@
 #IMPORTS:
 
-import Cliente
 import Metodos
 #VARIABLES:
 
