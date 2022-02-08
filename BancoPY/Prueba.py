@@ -21,8 +21,11 @@ def baja():
     pin=(int)(input("introduce tu pin"))
     delCuenta=("DELETE FROM cuenta WHERE dni= %s AND pin= %s")
     delCliente=("DELETE FROM cliente WHERE dni= %s AND contraseña= %s")
-    query.execute(delCuenta,dni,pin)
-    query.execute(delCliente,dni,passw)
+    try:
+        query.execute(delCuenta,dni,pin)
+        query.execute(delCliente,dni,passw)
+    except:
+        print("No se ha podido eliminar la cuenta")
 
 
 opcion=(int)(input("""Seleciona una opcion:
