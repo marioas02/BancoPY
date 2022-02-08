@@ -10,7 +10,7 @@ def agregarSaldo():
     dni = input("Cual es tu DNI?")
     pin = (int)(input("introduce tu pin"))
     cantidad=(int)(input("Cuanto quieres ingresar en tu cuenta?"))
-    addSaldo=("UPDATE cuenta SET saldo=(SELECT SUM(saldo) FROM cuenta) WHERE dni_cliente=%s AND pin=%s")
+    addSaldo=("UPDATE cuenta SET saldo=(SELECT SUM(saldo) FROM cuentaWHERE dni_cliente=%s AND pin=%s)")
     try:
         query.execute(addSaldo, cantidad, dni, pin)
     except:
