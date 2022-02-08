@@ -1,3 +1,5 @@
+conexion=mysql.connector.connect(host='localhost', user='root', passwd='root',deb='banco')
+query=conexion.cursor()
 def alta():
     print("Alta")
 def cambiarPin():
@@ -12,8 +14,17 @@ def inversion():
     print("inversion")
 def extraerDinero():
     print("extraer dinero")
+
 def baja():
-    print("baja")
+    dni=input("Cual es tu DNI?")
+    passw=input("Introduce tu contraseña")
+    pin=(int)(input("introduce tu pin"))
+    delCuenta=("DELETE FROM cuenta WHERE dni= %s AND pin= %s")
+    delCliente=("DELETE FROM cliente WHERE dni= %s AND contraseña= %s")
+    query.execute(delCuenta,dni,pin)
+    query.execute(delCliente,dni,passw)
+
+
 opcion=(int)(input("""Seleciona una opcion:
 1.- Dar de alta.
 2.- Iniciar sesion"""))
