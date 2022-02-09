@@ -10,7 +10,7 @@ def agregarSaldo():
     dni = input("Cual es tu DNI?")
     pin = (int)(input("introduce tu pin"))
     cantidad=(int)(input("Cuanto quieres ingresar en tu cuenta?"))
-    addSaldo=("UPDATE cuenta SET saldo=(SELECT SUM(saldo) FROM cuenta WHERE dni_cliente=%s AND pin=%s)")
+    addSaldo=("UPDATE cuenta SET saldo=(saldo+%s) WHERE dni_cliente=%s AND pin=%s")
     try:
         query.execute(addSaldo, cantidad, dni, pin)
     except:
@@ -20,8 +20,18 @@ def deposito():
 def inversion():
     print("inversion")
 def extraerDinero():
-    print("extraer dinero")
-
+    dni = input("Cual es tu DNI?")
+    pin = (int)(input("introduce tu pin"))
+    cantidad = (int)(input("Cuanto quieres retirar de tu cuenta?"))
+    comprobarSaldo=("SELECT saldo FROM cuenta WHERE dni_cliente=%s AND pin=%s")
+    removeSaldo=("UPDATE cuenta SET saldo=(saldo-%s) WHERE dni_cliente=%s AND pin=%s")
+    if cantidad>query.execute(comprobarSaldo, cantidad, dni, pin):
+        try:
+            query.execute(removeSaldo, cantidad, dni, pin)
+        except:
+            print("Se ha producido un error al retirar del saldo.")
+    else:
+        print("La cantidad introducida es superior a la del saldo y no se puede hacer la extracción")
 def baja():
     dni=input("Cual es tu DNI?")
     passw=input("Introduce tu contraseña")
