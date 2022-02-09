@@ -11,8 +11,9 @@ def agregarSaldo():
     pin = (int)(input("introduce tu pin"))
     cantidad=(int)(input("Cuanto quieres ingresar en tu cuenta?"))
     addSaldo=("UPDATE cuenta SET saldo=(saldo+%s) WHERE dni_cliente=%s AND pin=%s")
+    valores_addSaldo=(cantidad, dni, pin)
     try:
-        query.execute(addSaldo, cantidad, dni, pin)
+        query.execute(addSaldo, valores_addSaldo)
     except:
         print("Se ha producido un error al añadir el saldo.")
 def deposito():
@@ -24,23 +25,27 @@ def extraerDinero():
     pin = (int)(input("introduce tu pin"))
     cantidad = (int)(input("Cuanto quieres retirar de tu cuenta?"))
     comprobarSaldo=("SELECT saldo FROM cuenta WHERE dni_cliente=%s AND pin=%s")
+    valores_comprobarSaldo=(dni, pin)
     removeSaldo=("UPDATE cuenta SET saldo=(saldo-%s) WHERE dni_cliente=%s AND pin=%s")
-    if cantidad>query.execute(comprobarSaldo, cantidad, dni, pin):
+    valores_removeSaldo=(cantidad, dni, pin)
+    if cantidad>query.execute(comprobarSaldo, valores_comprobarSaldo):
         try:
-            query.execute(removeSaldo, cantidad, dni, pin)
+            query.execute(removeSaldo, valores_removeSaldo)
         except:
             print("Se ha producido un error al retirar del saldo.")
     else:
         print("La cantidad introducida es superior a la del saldo y no se puede hacer la extracción")
 def baja():
-    dni=input("Cual es tu DNI?")
+    dni=input("Introduce tu DNI?")
     passw=input("Introduce tu contraseña")
-    pin=(int)(input("introduce tu pin"))
+    pin=(int)(input("Introduce tu pin"))
     delCuenta=("DELETE FROM cuenta WHERE dni= %s AND pin= %s")
+    valores_delCuenta=(dni, pin)
     delCliente=("DELETE FROM cliente WHERE dni= %s AND contraseña= %s")
+    valores_delCliente=(dni, passw)
     try:
-        query.execute(delCuenta, dni, pin)
-        query.execute(delCliente, dni, passw)
+        query.execute(delCuenta, valores_delCuenta)
+        query.execute(delCliente, valores_delCliente)
     except:
         print("No se ha podido eliminar la cuenta")
 
