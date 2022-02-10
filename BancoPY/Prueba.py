@@ -1,5 +1,5 @@
 conexion=mysql.connector.connect(host='localhost', user='root', passwd='root',deb='banco')
-query=conexion.cursor()
+cur=conexion.cursor()
 def alta():
     print("Alta")
 def cambiarPin():
@@ -13,24 +13,32 @@ def agregarSaldo():
     addSaldo=("UPDATE cuenta SET saldo=(saldo+%s) WHERE dni_cliente=%s AND pin=%s")
     valores_addSaldo=(cantidad, dni, pin)
     try:
-        query.execute(addSaldo, valores_addSaldo)
+        cur.execute(addSaldo, valores_addSaldo)
     except:
         print("Se ha producido un error al añadir el saldo.")
 def deposito():
     print("deposito")
 def inversion():
     print("inversion")
+def saldoInt(data):
+    for num in data:
+        numeros=list(num)
+        saldoReal=numeros[0]
+    return int(saldoReal)
 def extraerDinero():
     dni = input("Cual es tu DNI?")
     pin = (int)(input("introduce tu pin"))
     cantidad = (int)(input("Cuanto quieres retirar de tu cuenta?"))
     comprobarSaldo=("SELECT saldo FROM cuenta WHERE dni_cliente=%s AND pin=%s")
     valores_comprobarSaldo=(dni, pin)
+    cur.execute(comprobarSaldo, valores_comprobarSaldo)
+    data = cur.fetchAll()
     removeSaldo=("UPDATE cuenta SET saldo=(saldo-%s) WHERE dni_cliente=%s AND pin=%s")
     valores_removeSaldo=(cantidad, dni, pin)
-    if cantidad>query.execute(comprobarSaldo, valores_comprobarSaldo):
+    saldoInt(data)
+    if cantidad < data:
         try:
-            query.execute(removeSaldo, valores_removeSaldo)
+            cur.execute(removeSaldo, valores_removeSaldo)
         except:
             print("Se ha producido un error al retirar del saldo.")
     else:
@@ -39,13 +47,13 @@ def baja():
     dni=input("Introduce tu DNI?")
     passw=input("Introduce tu contraseña")
     pin=(int)(input("Introduce tu pin"))
-    delCuenta=("DELETE FROM cuenta WHERE dni= %s AND pin= %s")
+    delCuenta=("DELETE FROM cuenta WHERE dni= %s AND pin= %s;")
     valores_delCuenta=(dni, pin)
-    delCliente=("DELETE FROM cliente WHERE dni= %s AND contraseña= %s")
+    delCliente=("DELETE FROM cliente WHERE dni= %s AND contraseña= %s;")
     valores_delCliente=(dni, passw)
     try:
-        query.execute(delCuenta, valores_delCuenta)
-        query.execute(delCliente, valores_delCliente)
+        cur.execute(delCuenta, valores_delCuenta)
+        cur.execute(delCliente, valores_delCliente)
     except:
         print("No se ha podido eliminar la cuenta")
 
