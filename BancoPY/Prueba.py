@@ -32,7 +32,7 @@ def extraerDinero():
     comprobarSaldo=("SELECT saldo FROM cuenta WHERE dni_cliente=%s AND pin=%s")
     valores_comprobarSaldo=(dni, pin)
     cur.execute(comprobarSaldo, valores_comprobarSaldo)
-    data = cur.fetchAll()
+    data = cur.fetchall()
     removeSaldo=("UPDATE cuenta SET saldo=(saldo-%s) WHERE dni_cliente=%s AND pin=%s")
     valores_removeSaldo=(cantidad, dni, pin)
     saldoInt(data)
