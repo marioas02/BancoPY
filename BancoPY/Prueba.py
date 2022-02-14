@@ -1,3 +1,5 @@
+import random
+
 conexion=mysql.connector.connect(host='localhost', user='root', passwd='root',deb='banco')
 cur=conexion.cursor()
 def alta():
@@ -16,15 +18,54 @@ def agregarSaldo():
         cur.execute(addSaldo, valores_addSaldo)
     except:
         print("Se ha producido un error al añadir el saldo.")
+def porcentajeDeposito(anos):
+    if anos<2:
+        porcentaje=(round(random.uniform(0.0, 1.0),2))
+    else:
+        porcentaje=(round(random.uniform(1.0, 2.0), 2))
+    return float(porcentaje)
 def deposito():
-    print("deposito")
+    while True:
+        cantidad=input("¿De cuánta cantidad deseas hacer el deposito?")
+        if cantidad.isdigit():
+            break
+        else:
+            print("Introduce una cantidad en números.")
+    while True:
+        anos=input("¿A cuántos años deseas hacer el deposito?")
+        if anos.isdigit():
+            anos=(int)(anos)
+            break
+        else:
+            print("Introduce una cantidad de años en número.")
+    comprobarSaldo = ("SELECT saldo FROM cuenta WHERE dni_cliente=%s AND pin=%s")
+    valores_comprobarSaldo = (self.dni, self.pin)
+    cur.execute(comprobarSaldo, valores_comprobarSaldo)
+    data = cur.fetchall()
+    removeSaldo = ("UPDATE cuenta SET saldo=(saldo-%s) WHERE dni_cliente=%s AND pin=%s")
+    valores_removeSaldo = (cantidad, self.dni, self.pin)
+    saldoFloat(data)
+    cantidadFloat=float(cantidad)
+    if cantidad < data:
+        try:
+            cur.execute(removeSaldo, valores_removeSaldo)
+        except:
+            print("Se ha producido un error al retirar del saldo.")
+        porcentaje=porcentajeDeposito(anos)
+        for i in anos:
+            cantidadFloat=cantidadFloat * porcentaje
+            i+=1
+        print("El deposito de ", cantidad," € ha resultado ",cantidadFloat," €")
+    else:
+        print("La cantidad introducida es superior a la del saldo y no se puede hacer el deposito")
+
 def inversion():
     print("inversion")
-def saldoInt(data):
+def saldoFloat(data):
     for num in data:
         numeros=list(num)
         saldoReal=numeros[0]
-    return int(saldoReal)
+    return float(saldoReal)
 def extraerDinero():
     dni = input("Cual es tu DNI?")
     pin = (int)(input("introduce tu pin"))
@@ -35,7 +76,7 @@ def extraerDinero():
     data = cur.fetchall()
     removeSaldo=("UPDATE cuenta SET saldo=(saldo-%s) WHERE dni_cliente=%s AND pin=%s")
     valores_removeSaldo=(cantidad, dni, pin)
-    saldoInt(data)
+    saldoFloat(data)
     if cantidad < data:
         try:
             cur.execute(removeSaldo, valores_removeSaldo)
